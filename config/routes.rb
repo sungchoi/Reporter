@@ -1,6 +1,8 @@
 Reporter::Application.routes.draw do
   
   
+  resources :reports
+
   resources :users, :except => :index
   
   
