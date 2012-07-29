@@ -1,5 +1,6 @@
 class Report < ActiveRecord::Base
-  attr_accessible :report_type, :description, :location, :latitude, :longitude
+  attr_accessible :report_type, :description, :location, :latitude, :longitude,
+    :image_url, :live_stream
 
   belongs_to :user
   has_many :confirms
