@@ -1,19 +1,17 @@
 class Report < ActiveRecord::Base
-  attr_accessible :report_type, :description, :location
+  attr_accessible :report_type, :description, :location, :latitude, :longitude
 
   belongs_to :user
   has_many :votes
 
-
   def confirmation_count(params)
     Vote.where(:report_id => params[:id] ).where(:type => "confirm").count
   end
-    
+
   def inaccuracy_count(params)
     Vote.where(:report_id => params[:id] ).where(:type => "inaccurate").count
   end 
-  
-  
+
   validates_numericality_of :latitude, :allow_nil => true,
     :greater_than_or_equal_to => -90.0,
     :less_than_or_equal_to    => 90.0
