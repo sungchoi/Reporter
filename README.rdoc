@@ -1,1 +1,13 @@
 Crowd reporting app.
+
+To get started, you need to create a username and password in the web UI.
+
+You can get a token by POSTing to:
+
+/api/v1/tokens.json
+
+with params username: <username>
+            password: <password>
+
+Then you can authenticate with the token. For example, you can POST JSON
+to /reports and create a report.
