@@ -3,6 +3,17 @@ class Report < ActiveRecord::Base
 
   belongs_to :user
   has_many :votes
+  
+  has_reputation :confirm_votes,
+      :source => :user,
+      :aggregated_by => :sum #,
+      # :source_of => [{ :reputation => :answering_skill, :of => :author }]
+      # :init_value => initial_value
+
+
+  has_reputation :inaccurate_votes,
+      :source => :user,
+      :aggregated_by => :sum
 
 
   def confirmation_count(params)

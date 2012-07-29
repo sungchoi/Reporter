@@ -6,10 +6,12 @@ class ReportsController < ApplicationController
   # POST /reports/:id/confirm
   # POST /reports/:id/confirm.json
   def confirm
+    @user = current_user
     @report = Report.find(params[:id])
+    @report.add_evaluation(:confirm_votes, 1, @user) #reputation system
     @vote = Confirm.new
     @vote.report_id = params[:id]
-    @vote.user_id = @report.user_id
+    @vote.user_id = @user.id
     respond_to do |format|
       if @vote.save!
         format.html { redirect_to @report, notice: 'Report was confirmed.' }
@@ -24,10 +26,12 @@ class ReportsController < ApplicationController
   # POST /reports/:id/inaccurate
   # POST /reports/:id/inaccurate.json
   def inaccurate
+    @user = current_user
     @report = Report.find(params[:id])
+    @report.add_evaluation(:inaccurate_votes, 1, @user)
     @vote = Inaccurate.new
     @vote.report_id = params[:id]
-    @vote.user_id = @report.user_id
+    @vote.user_id = @user.id
     respond_to do |format|
       if @vote.save!
         format.html { redirect_to @report, notice: 'Report was marked as inaccurate.' }
