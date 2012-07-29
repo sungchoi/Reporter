@@ -7,7 +7,7 @@ class ReportsControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    get :index
+    get :index, :format => :json
     assert_response :success
     assert_not_nil assigns(:reports)
   end
@@ -38,13 +38,5 @@ class ReportsControllerTest < ActionController::TestCase
   test "should update report" do
     put :update, id: @report, report: { location: @report.location, report_type: @report.report_type }
     assert_redirected_to report_path(assigns(:report))
-  end
-
-  test "should destroy report" do
-    assert_difference('Report.count', -1) do
-      delete :destroy, id: @report
-    end
-
-    assert_redirected_to reports_path
   end
 end

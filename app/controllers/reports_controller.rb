@@ -1,6 +1,8 @@
 class ReportsController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
+  before_filter :find_report, :only => [:confirm, :edit, :update]
+  before_filter :match_report_user, :only => [:edit, :update]
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json'}
 
   # POST /reports/:id/confirm
@@ -22,7 +24,7 @@ class ReportsController < ApplicationController
       end
     end
   end
-  
+
   # POST /reports/:id/inaccurate
   # POST /reports/:id/inaccurate.json
   def inaccurate
@@ -42,17 +44,12 @@ class ReportsController < ApplicationController
       end
     end
   end
-  
-  
+
   # GET /reports
   # GET /reports.json
   def index
     @reports = Report.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @reports.map(&:to_hash) }
-    end
+    render json: @reports.map(&:to_hash)
   end
 
   # GET /reports/1
@@ -101,8 +98,6 @@ class ReportsController < ApplicationController
   # PUT /reports/1
   # PUT /reports/1.json
   def update
-    @report = Report.find(params[:id])
-
     respond_to do |format|
       if @report.update_attributes(params[:report])
         format.html { redirect_to @report, notice: 'Report was successfully updated.' }
@@ -114,15 +109,11 @@ class ReportsController < ApplicationController
     end
   end
 
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy
+  def find_report
     @report = Report.find(params[:id])
-    @report.destroy
+  end
 
-    respond_to do |format|
-      format.html { redirect_to reports_url }
-      format.json { head :no_content }
-    end
+  def match_report_user
+    current_user.id == @report.user_id
   end
 end
