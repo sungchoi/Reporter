@@ -38,8 +38,7 @@ function initialize() {
 				return function() {
 					var time = jsonData[i].updated_at;
 					var timeRel = jQuery.timeago(time.substring(0, 10));
-					var id=i;
-					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><button id=\"confirmButton\" onclick=\"confirmButton(" + jsonData[id].id + ")\">Confirm</button><button id=\"inaccurateButton\">Mark as inaccurate</button>");
+					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><button id=\"confirmButton\" onclick=\"confirmButton(" + jsonData[i].id + ")\">Confirm</button><button id=\"inaccurateButton\" onclick=\"inaccurateButton(" + jsonData[i].id + ")\">Mark as inaccurate</button>");
 					$('#confirmButton').click(function() {
 						console.log("CONFIRM");
 						$.post('reports/' + jsonData[id].id + '/confirm');
@@ -85,7 +84,7 @@ function initialize() {
 					var time = jsonData[id].updated_at;
 					var timeRel = jQuery.timeago(time.substring(0, 10));
 
-					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button id=\"confirmButton\"  onclick=\"confirmButton(" + jsonData[id].id + ")\">Confirm</button><button id=\"inaccurateButton\">Mark as inaccurate</button>");
+					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button id=\"confirmButton\"  onclick=\"confirmButton(" + jsonData[id].id + ")\">Confirm</button><button id=\"inaccurateButton\"   onclick=\"inaccurateButton(" + jsonData[id].id + ")\">Mark as inaccurate</button>");
 					location.reload();
 					$('#confirmButton').click(function() {
 						console.log("CONFIRM");
@@ -195,6 +194,9 @@ function initialize() {
 
 function confirmButton(id) {
 	$.post('reports/' + id + '/confirm');
+}
+function inaccurateButton(id) {
+	$.post('reports/' + id + '/inaccurate');
 }
 
 function hide(type) {
