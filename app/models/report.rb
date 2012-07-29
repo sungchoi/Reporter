@@ -4,6 +4,16 @@ class Report < ActiveRecord::Base
   belongs_to :user
   has_many :votes
 
+
+  def confirmation_count
+    Vote.where(:report_id => @report.id ).where(:type => "confirm").count
+  end
+    
+  def inaccuracy_count
+    Vote.where(:report_id => @report.id ).where(:type => "inaccuracy").count
+  end 
+  
+  
   validates_numericality_of :latitude, :allow_nil => true,
     :greater_than_or_equal_to => -90.0,
     :less_than_or_equal_to    => 90.0
