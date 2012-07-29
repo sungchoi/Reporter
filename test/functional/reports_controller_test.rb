@@ -26,7 +26,7 @@ class ReportsControllerTest < ActionController::TestCase
   end
 
   test "should show report" do
-    get :show, id: @report
+    get :show, id: @report, :format => :json
     assert_response :success
   end
 

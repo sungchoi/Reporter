@@ -40,22 +40,17 @@ class ReportsController < ApplicationController
     end
   end
 
-  # GET /reports
   # GET /reports.json
   def index
     @reports = Report.all
     render json: @reports.map(&:to_hash)
   end
 
-  # GET /reports/1
   # GET /reports/1.json
   def show
     @report = Report.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @report.to_hash }
-    end
+    render json: @report.to_hash
   end
 
   # GET /reports/new
