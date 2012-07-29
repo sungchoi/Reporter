@@ -77,8 +77,16 @@ function initialize() {
 					var time = jsonData[id].updated_at;
 					var timeRel = jQuery.timeago(time.substring(0, 10));
 
-					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button>Confirm</button><button>Mark as inaccurate</button>");
+					
+					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button id=\"confirmButton\">Confirmmmmmm</button><button id=\"inaccurateButton\">Mark as inaccurate</button>");
 					infowindow.open(map, marker);
+					$('#confirmButton').click(function() {
+						$.post('reports/' + jsonData[id].id + '/confirm');
+						console.log("confirm");
+					});
+					$('#inaccurateButton').click(function() {
+						$.post('reports/' + jsonData[id].id + '/inaccurate');
+					});
 				});
 			}
 		}
@@ -160,7 +168,7 @@ function initialize() {
 
 	$('form input').click(function() {
 		if(this.checked) {
-			
+
 			var gmarkers = locationsMarkers;
 			for(var i = 0; i < gmarkers.length; i++) {
 				if(gmarkers[i].mycategory == category) {
