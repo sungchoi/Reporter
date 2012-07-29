@@ -1,6 +1,7 @@
 class ReportsController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
+  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json'}
   # GET /reports
   # GET /reports.json
   def index
@@ -44,7 +45,6 @@ class ReportsController < ApplicationController
   def create
     @report = Report.new(params[:report])
     @report.user_id = current_user.id
-
     respond_to do |format|
       if @report.save
         format.html { redirect_to @report, notice: 'Report was successfully created.' }
