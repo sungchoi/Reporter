@@ -46,13 +46,10 @@ function initialize() {
 					var time = jsonData[i].updated_at;
 					var timeRel = jQuery.timeago(time.substring(0, 10));
 					var img = (data[i].image_url !== null) ? "<img src=\"" + data[i].image_url + "\">" : "";
-					console.log(img);
 					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><p>Confirmation count: " + data[i].confirmation_count + "<br />Inaccuracy count: " + data[i].inaccuracy_count + "</p>" + img + "<button id=\"confirmButton\" onclick=\"confirmButton(" + jsonData[i].id + ")\">Confirm</button><button id=\"inaccurateButton\" onclick=\"inaccurateButton(" + jsonData[i].id + ")\">Mark as inaccurate</button>");
 					infowindow.open(map, marker);
 				}
 			})(marker, i));
-			var markerCluster = new MarkerClusterer(map, locationsMarkers);
-
 		}
 	});
 
