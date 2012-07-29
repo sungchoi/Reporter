@@ -9,12 +9,9 @@ function initialize() {
 
 	var input = document.getElementById('searchTextField');
 	var autocomplete = new google.maps.places.Autocomplete(input);
-
 	autocomplete.bindTo('bounds', map);
 
 	var infowindow = new google.maps.InfoWindow();
-
-	//var locations = [['Crash', 33.57, 36.3, 4], ['Earthquake', 33.7, 36.8784, 5], ['Fire', 33.508, 36.4, 3], ['Road block', 35.2, 38.2, 2], ['Fire', 33.567, 36.3087, 1]];
 
 	// time created
 	// creator
@@ -26,13 +23,10 @@ function initialize() {
 	// actions: confirm, inaccurate
 
 	var locationsMarkers = new Array();
-
 	var infowindow = new google.maps.InfoWindow();
-
 	var marker, i;
-
 	var jsonData;
-	
+
 	$.getJSON('reports.json', function(data) {
 		jsonData = data;
 		var items = [];
@@ -50,19 +44,21 @@ function initialize() {
 			locationsMarkers[i] = marker;
 			google.maps.event.addListener(marker, 'click', (function(marker, i) {
 				return function() {
-					infowindow.setContent(data[i].report_type);
+					var time = jsonData[i].updated_at;
+					var timeRel = jQuery.timeago(time.substring(0, 10));
+
+					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><button>Confirm</button><button>Mark as inaccurate</button>");
 					infowindow.open(map, marker);
 				}
 			})(marker, i));
 
-			/*console.log(data[0].description);
-			$.each(data[i], function(key, val) {
-				j = j + 1;
-			});*/
 		}
 	});
 
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
+		a();
+	});
+	function a () {
 		infowindow.close();
 		var place = autocomplete.getPlace();
 		if(place.geometry.viewport) {
@@ -76,7 +72,10 @@ function initialize() {
 		for( i = 0; i < locationsMarkers.length; i++) {
 			var m = locationsMarkers[i];
 			if(map.getBounds().contains(m.getPosition())) {
-				$("#searchResults").append('<div id=\"result' + i + '\" class=\"result\"><a>' + jsonData[i].report_type + '</a></div>');
+				var time = jsonData[i].updated_at;
+				var timeRel = jQuery.timeago(time.substring(0, 10));
+
+				$("#searchResults").append('<a id=\"result' + i + '\" class=\"result\"><div>' + jsonData[i].report_type + '</div><div class="results2">Updated ' + timeRel + '</div></a>');
 				$(".result").click(function() {
 					$("#searchResults").children().removeClass('resultSelected');
 					$(this).addClass('resultSelected');
@@ -88,6 +87,9 @@ function initialize() {
 				});
 			}
 		}
+	}
+	google.maps.event.addListener(map, 'center_changed', function() {
+		a();
 	});
 	var styles = [{
 		stylers : [{
@@ -114,13 +116,6 @@ function initialize() {
 	map.setOptions({
 		styles : styles
 	});
-
-	/*$("#dialog:ui-dialog").dialog("destroy");
-
-	 $("#dialog-modal").dialog({
-	 height : 140,
-	 modal : true
-	 });*/
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
