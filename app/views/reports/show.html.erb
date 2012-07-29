@@ -1,31 +1,42 @@
-<p>
-  <b>Location:</b>
-  <%= @report.location %>
-</p>
+<table>
+  <tr>
+    <th>Location:</th>
+    <th>Type:</th>
+    <th>Description:</th>
+  </tr>
 
-<p>
-  <b>Type:</b>
-  <%= @report.report_type%>
-</p>
+  <tr>
+    <td><%= @report.location%></td>
+    <td><%= @report.report_type%></td>
+    <td><%= @report.description %></td>
+  </tr>
+</table>
 
-<p>
-  <b>Description:</b>
-  <%= @report.description %>
-</p>
+<table>
+  <tr>
+    <th>Confirm Level:</th>
+    <th>Inaccurate Level:</th>
+  </tr>
+  <tr>
+	<td><%= @report.reputation_value_for(:confirm_votes).to_i %></td>
+	<td><%= @report.reputation_value_for(:inaccurate_votes).to_i %></td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>Confirm Count:</th>
+    <th>Inaccurate Count:</th>
+  </tr>
+  <tr>
+	<td><%= @report.confirmation_count(params) %></td>
+	<td><%= @report.inaccuracy_count(params) %></td>
+  </tr>
+</table>
 
 
-<p>
-  <b>Confirmations:</b>
-  <%= @report.confirmation_count %>
-</p>
-
-<p>
-  <b>Inaccurate:</b>
-  <%= @report.inaccuracy_count %>
-</p>
-
+<% if current_user && !current_user.voted_for?(@report) %>
 <%= button_to "Confirm", {:controller => :reports, :action => :confirm}, :method => :post %>
 <%= button_to "Inaccurate", {:controller => :reports, :action => :inaccurate}, :method => :post %>
-
-<%= link_to 'Edit', edit_report_path(@report) %> |
+<% end %>
+<%= link_to 'Edit', edit_report_path(@report) %>
 <%= link_to 'Back', reports_path %>

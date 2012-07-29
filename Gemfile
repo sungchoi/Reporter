@@ -6,7 +6,8 @@ gem 'rails', '3.2.6'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-
+gem 'twilio-ruby'
+gem 'activerecord-reputation-system', :require => 'reputation_system'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -31,6 +32,7 @@ end
 group :development do
   gem 'shoulda'
   gem 'debugger'
+  gem 'quiet_assets'
 end
 
 gem 'execjs'
@@ -47,6 +49,3 @@ gem 'therubyracer'
 
 # Deploy with Capistrano
 # gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'

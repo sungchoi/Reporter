@@ -5,6 +5,14 @@ class Report < ActiveRecord::Base
   belongs_to :user
   has_many :confirms
   has_many :inaccurates
+  
+  has_reputation :confirm_votes,
+      :source => :user,
+      :aggregated_by => :sum
+
+  has_reputation :inaccurate_votes,
+      :source => :user,
+      :aggregated_by => :sum
 
   def confirmation_count
     confirms.count
