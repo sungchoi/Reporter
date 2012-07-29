@@ -4,6 +4,15 @@ class Report < ActiveRecord::Base
   belongs_to :user
   has_many :votes
 
+  def confirmation_count
+    Vote.where(:report_id => @report.id ).where(:type => "confirm").count
+  end
+    
+  def inaccuracy_count
+    Vote.where(:report_id => @report.id ).where(:type => "inaccuracy").count
+  end 
+  
+  
   # protected_attributes = {created_at, updated_at, user_id, latest_status, co
   # confirmation_count = number of confirmations
   # inaccuracy_count = number of inaccurate votes
