@@ -2,6 +2,7 @@ require 'test_helper'
 
 class ReportsControllerTest < ActionController::TestCase
   setup do
+    sign_in users(:user1)
     @report = reports(:one)
   end
 
@@ -18,7 +19,7 @@ class ReportsControllerTest < ActionController::TestCase
 
   test "should create report" do
     assert_difference('Report.count') do
-      post :create, report: { body: @report.body, title: @report.title }
+      post :create, report: { location: @report.location, report_type: @report.report_type}
     end
 
     assert_redirected_to report_path(assigns(:report))
@@ -35,7 +36,7 @@ class ReportsControllerTest < ActionController::TestCase
   end
 
   test "should update report" do
-    put :update, id: @report, report: { body: @report.body, title: @report.title }
+    put :update, id: @report, report: { location: @report.location, report_type: @report.report_type }
     assert_redirected_to report_path(assigns(:report))
   end
 

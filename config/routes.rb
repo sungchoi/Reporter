@@ -1,6 +1,8 @@
 Reporter::Application.routes.draw do
   devise_for :users
 
+  resources :votes
+
   resources :reports
 
   # The priority is based upon order of creation:

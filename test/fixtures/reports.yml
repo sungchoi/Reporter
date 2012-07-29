@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  title: MyString
-  body: MyString
+  location: Nowhere
+  report_type: Nothing Happened
+  Description: Who cares?
 
 two:
-  title: MyString
-  body: MyString
+  location: Somewhere
+  report_type: Something happened
+  Description: I know not what

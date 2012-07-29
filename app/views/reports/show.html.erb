@@ -1,13 +1,17 @@
 <p>
-  <b>Title:</b>
-  <%= @report.title %>
+  <b>Location:</b>
+  <%= @report.location %>
 </p>
 
 <p>
-  <b>Body:</b>
-  <%= @report.body %>
+  <b>Type:</b>
+  <%= @report.report_type%>
 </p>
 
+<p>
+  <b>Description:</b>
+  <%= @report.description %>
+</p>
 
 <%= link_to 'Edit', edit_report_path(@report) %> |
 <%= link_to 'Back', reports_path %>
