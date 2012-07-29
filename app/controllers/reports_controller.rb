@@ -1,6 +1,42 @@
 class ReportsController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
+
+  # POST /reports/:id/confirm
+  # POST /reports/:id/confirm.json
+  def confirm
+    @report = Report.find(params[:id])
+    @vote = Confirm.new
+    @vote.report_id = params[:id]
+    respond_to do |format|
+      if @vote.save!
+        format.html { redirect_to @report, notice: 'Report was confirmed.' }
+        format.json { render json: @report, status: :created, location: @report }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @vote.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  # POST /reports/:id/inaccurate
+  # POST /reports/:id/inaccurate.json
+  def inaccurate
+    @report = Report.find(params[:id])
+    @vote = Inaccurate.new
+    @vote.report_id = params[:id]
+    respond_to do |format|
+      if @vote.save!
+        format.html { redirect_to @report, notice: 'Report was marked as inaccurate.' }
+        format.json { render json: @report, status: :created, location: @report }
+      else
+        format.html { render action: "show" }
+        format.json { render json: @vote.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  
   # GET /reports
   # GET /reports.json
   def index

@@ -1,9 +1,14 @@
 Reporter::Application.routes.draw do
   devise_for :users
 
-  resources :votes
-
-  resources :reports
+  resources :reports do 
+    member do
+      post 'confirm'
+    end
+    member do
+      post 'inaccurate'
+    end
+  end
 
   namespace :api do
     namespace :v1 do

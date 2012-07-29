@@ -1,0 +1,3 @@
+class Confirm < Vote
+  
+end
