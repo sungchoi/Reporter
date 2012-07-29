@@ -1,6 +1,8 @@
 Reporter::Application.routes.draw do
 
 
+  resources :votes
+
   resources :reports
   resources :sessions, :only => [:new, :create, :destroy]
   resources :users, :except => :index

@@ -1,11 +1,11 @@
 class User < ActiveRecord::Base
   include UsersHelper
 
-  attr_accessible :username, :email, :phone_number, :password,
-    :password_confirmation
+  attr_accessible :username, :email, :phone_number, :password, :password_confirmation
   has_secure_password
 
   has_many    :reports
+  has_many    :votes
 
   before_save :create_remember_token
 
