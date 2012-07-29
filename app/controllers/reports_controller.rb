@@ -43,6 +43,7 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     @report = Report.new(params[:report])
+    @report.user_id = current_user.id
 
     respond_to do |format|
       if @report.save
