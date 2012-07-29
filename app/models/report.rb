@@ -5,12 +5,12 @@ class Report < ActiveRecord::Base
   has_many :votes
 
 
-  def confirmation_count
-    Vote.where(:report_id => @report.id ).where(:type => "confirm").count
+  def confirmation_count(params)
+    Vote.where(:report_id => params[:id] ).where(:type => "confirm").count
   end
     
-  def inaccuracy_count
-    Vote.where(:report_id => @report.id ).where(:type => "inaccuracy").count
+  def inaccuracy_count(params)
+    Vote.where(:report_id => params[:id] ).where(:type => "inaccurate").count
   end 
   
   

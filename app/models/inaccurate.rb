@@ -1,0 +1,3 @@
+class Inaccurate < Vote
+  
+end
