@@ -4,7 +4,7 @@ class Report < ActiveRecord::Base
   belongs_to :user
   has_many :votes
 
-<<<<<<< HEAD
+
   def confirmation_count
     Vote.where(:report_id => @report.id ).where(:type => "confirm").count
   end
@@ -14,7 +14,6 @@ class Report < ActiveRecord::Base
   end 
   
   
-=======
   validates_numericality_of :latitude, :allow_nil => true,
     :greater_than_or_equal_to => -90.0,
     :less_than_or_equal_to    => 90.0
@@ -22,7 +21,6 @@ class Report < ActiveRecord::Base
     :greater_than_or_equal_to => -180.0,
     :less_than_or_equal_to    => 180.0
 
->>>>>>> master
   # protected_attributes = {created_at, updated_at, user_id, latest_status, co
   # confirmation_count = number of confirmations
   # inaccuracy_count = number of inaccurate votes
