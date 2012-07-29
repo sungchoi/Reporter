@@ -38,5 +38,5 @@ production:
   database: Reporter_production
   pool: 5
   username: root
-  password:
+  password: anchor65zero
   socket: /tmp/mysql.sock
