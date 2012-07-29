@@ -7,6 +7,7 @@ class UsersController < ApplicationController
       flash[:success] = "Welcome to the Reporter App!"
       redirect_to user_path(@user)
     else
+      flash[:error] = "User creation failed: #{@user.errors.full_messages.join("\n")}"
       render 'new'
     end
   end
@@ -35,7 +36,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @stories = current_user.stories.all
+    @reports = @user.reports
   end
 
 end

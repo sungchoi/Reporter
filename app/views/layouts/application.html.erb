@@ -8,7 +8,7 @@
 </head>
 <body>
 <%= render :partial => 'layouts/header' %>
-
+<%= flash[:warning] || flash[:notice] || flash[:alert] || flash[:error] %>
 <%= yield %>
 
 </body>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120728224630) do
+ActiveRecord::Schema.define(:version => 20120728235846) do
 
   create_table "reports", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(:version => 20120728224630) do
     t.string   "phone_number"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.string   "remember_token"
   end
+
+  add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
 
 end
