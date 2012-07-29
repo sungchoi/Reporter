@@ -39,7 +39,13 @@ function initialize() {
 					var time = jsonData[i].updated_at;
 					var timeRel = jQuery.timeago(time.substring(0, 10));
 
-					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><button>Confirm</button><button>Mark as inaccurate</button>");
+					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><button id=\"confirmButton\">Confirm</button><button id=\"inaccurateButton\">Mark as inaccurate</button>");
+					$('#confirmButton').click(function() {
+						$.post('reports/' + jsonData[id].id + '/confirm');
+					});
+					$('#inaccurateButton').click(function() {
+						$.post('reports/' + jsonData[id].id + '/inaccurate');
+					});
 					infowindow.open(map, marker);
 				}
 			})(marker, i));
@@ -78,8 +84,7 @@ function initialize() {
 					var timeRel = jQuery.timeago(time.substring(0, 10));
 
 					
-					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button id=\"confirmButton\">Confirmmmmmm</button><button id=\"inaccurateButton\">Mark as inaccurate</button>");
-					infowindow.open(map, marker);
+					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button id=\"confirmButton\">Confirm</button><button id=\"inaccurateButton\">Mark as inaccurate</button>");
 					$('#confirmButton').click(function() {
 						$.post('reports/' + jsonData[id].id + '/confirm');
 						console.log("confirm");
@@ -87,6 +92,7 @@ function initialize() {
 					$('#inaccurateButton').click(function() {
 						$.post('reports/' + jsonData[id].id + '/inaccurate');
 					});
+					infowindow.open(map, marker);
 				});
 			}
 		}
