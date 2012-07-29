@@ -1,19 +1,16 @@
 class ReportsController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
-  before_filter :find_report, :only => [:confirm, :edit, :update]
+  before_filter :authenticate_user!, :only => [:new, :edit, :create, :update, :confirm, :inaccurate]
+  before_filter :find_user, :only => [:confirm, :inaccurate]
+  before_filter :find_report, :only => [:confirm, :inaccurate, :edit, :update]
   before_filter :match_report_user, :only => [:edit, :update]
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json'}
 
   # POST /reports/:id/confirm
   # POST /reports/:id/confirm.json
   def confirm
-    @user = current_user
-    @report = Report.find(params[:id])
     @report.add_evaluation(:confirm_votes, 1, @user) #reputation system
-    @vote = Confirm.new
-    @vote.report_id = params[:id]
-    @vote.user_id = @user.id
+    @vote = Confirm.new(:report_id => params[:id], :user_id => @user.id)
     respond_to do |format|
       if @vote.save!
         format.html { redirect_to @report, notice: 'Report was confirmed.' }
@@ -28,8 +25,6 @@ class ReportsController < ApplicationController
   # POST /reports/:id/inaccurate
   # POST /reports/:id/inaccurate.json
   def inaccurate
-    @user = current_user
-    @report = Report.find(params[:id])
     @report.add_evaluation(:inaccurate_votes, 1, @user)
     @vote = Inaccurate.new
     @vote.report_id = params[:id]
@@ -107,6 +102,10 @@ class ReportsController < ApplicationController
         format.json { render json: @report.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def find_user
+    @user = current_user
   end
 
   def find_report

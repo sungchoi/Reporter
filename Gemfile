@@ -19,6 +19,8 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem 'execjs'
+  gem 'therubyracer'
 end
 
 gem 'jquery-rails'
@@ -27,16 +29,15 @@ gem 'devise'
 group :test do
   gem 'shoulda'
   gem 'debugger'
+  gem 'test-unit', :require => "test/unit"
 end
 
 group :development do
   gem 'shoulda'
   gem 'debugger'
   gem 'quiet_assets'
+  gem 'test-unit', :require => "test/unit"
 end
-
-gem 'execjs'
-gem 'therubyracer'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
