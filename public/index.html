@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<script type="text/javascript"
 		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAhkXZxYg-A9ecupDFxJ4KLH2w0kNK050Y&sensor=false&libraries=places"></script>
@@ -8,17 +9,29 @@
 		<script src="reports.json"></script>
 		<script language="JavaScript" src="js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="js/jquery.ui.map.full.min.js"></script>
+		<script language="JavaScript" src="js/markerclusterer.js"></script>
 		<script language="JavaScript" src="js/map.js"></script>
 		<script src="js/jquery.timeago.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="sidebar">
-			<a id="logoArea" href="index.html"> <img id="logo" alt="NetApp" src="img/live_iconR.png" width="50px"> <h1>Reporter</h1></a>
-			<p>
-				Search:
-			</p>
-			<input id="searchTextField" type="text" size="30">
+			<a id="logoArea" href="index.html"> <img id="logo" alt="NetApp" src="img/live_iconR.png" width="50px"> <h1>LivePort</h1></a>
+			<input id="searchTextField" type="text" size="30" placeholder="Search a location...">
 			<div id="searchResults"></div>
+			<!--form>
+				<input type="checkbox" id="roadBlockBox" name="roadBlock" value="roadBlock"/>
+				Road block
+				<br />
+				<input type="checkbox" id="fireBox" name="fire" value="fire"/>
+				Fire
+				<br />
+				<input type="checkbox" id="crashBox" name="crash" value="crash"/>
+				Car crash
+				<br />
+				<input type="checkbox" id="warBox" name="war" value="war"/>
+				War
+				<br />
+			</form-->
 			<a href="/reports/new">Add a report</a>
 		</div>
 		<div id="map_canvas"></div>

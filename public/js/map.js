@@ -13,15 +13,6 @@ function initialize() {
 
 	var infowindow = new google.maps.InfoWindow();
 
-	// time created
-	// creator
-	// time occurred
-	// status
-	// last action time
-	// confirmed count
-	// inaccurate count
-	// actions: confirm, inaccurate
-
 	var locationsMarkers = new Array();
 	var infowindow = new google.maps.InfoWindow();
 	var marker, i;
@@ -41,7 +32,8 @@ function initialize() {
 				icon : image
 			});
 
-			locationsMarkers[i] = marker;
+			locationsMarkers.push(marker);
+
 			google.maps.event.addListener(marker, 'click', (function(marker, i) {
 				return function() {
 					var time = jsonData[i].updated_at;
@@ -51,14 +43,11 @@ function initialize() {
 					infowindow.open(map, marker);
 				}
 			})(marker, i));
-
+			var markerCluster = new MarkerClusterer(map, locationsMarkers);
 		}
 	});
 
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
-		a();
-	});
-	function a () {
 		infowindow.close();
 		var place = autocomplete.getPlace();
 		if(place.geometry.viewport) {
@@ -67,6 +56,38 @@ function initialize() {
 			map.setCenter(place.geometry.location);
 			map.setZoom(17);
 		}
+		$("#searchResults").empty();
+		var text = "";
+		for( i = 0; i < locationsMarkers.length; i++) {
+			var m = locationsMarkers[i];
+			if(map.getBounds().contains(m.getPosition())) {
+				var time = jsonData[i].updated_at;
+				var timeRel = jQuery.timeago(time.substring(0, 10));
+
+				$("#searchResults").append('<a id=\"result' + i + '\" class=\"result\"><div>' + jsonData[i].report_type + '</div><div class=\"results2\">Updated ' + timeRel + '</div></a>');
+				$(".result").click(function() {
+					$("#searchResults").children().removeClass('resultSelected');
+					$(this).addClass('resultSelected');
+					var temp = $(this).attr("id");
+					var id = temp.substring(6, temp.length);
+					var selectedMarker = locationsMarkers[id];
+					map.setCenter(selectedMarker.position);
+					map.setZoom(13);
+
+					var time = jsonData[id].updated_at;
+					var timeRel = jQuery.timeago(time.substring(0, 10));
+
+					infowindow.setContent("<h3>" + jsonData[id].report_type + "</h3><p>Detail: " + jsonData[id].description + "</p><p>Created by user " + jsonData[id].user_id + " " + timeRel + "</p><button>Confirm</button><button>Mark as inaccurate</button>");
+					infowindow.open(map, marker);
+				});
+			}
+		}
+	});
+
+	google.maps.event.addListener(map, 'click', function() {
+		infowindow.close();
+	});
+	google.maps.event.addListener(map, 'mouseup', function() {
 		$("#searchResults").empty();
 		var text = "";
 		for( i = 0; i < locationsMarkers.length; i++) {
@@ -87,10 +108,30 @@ function initialize() {
 				});
 			}
 		}
-	}
-	google.maps.event.addListener(map, 'center_changed', function() {
-		a();
 	});
+	google.maps.event.addListener(map, 'dblclick', function() {
+		$("#searchResults").empty();
+		var text = "";
+		for( i = 0; i < locationsMarkers.length; i++) {
+			var m = locationsMarkers[i];
+			if(map.getBounds().contains(m.getPosition())) {
+				var time = jsonData[i].updated_at;
+				var timeRel = jQuery.timeago(time.substring(0, 10));
+
+				$("#searchResults").append('<a id=\"result' + i + '\" class=\"result\"><div>' + jsonData[i].report_type + '</div><div class="results2">Updated ' + timeRel + '</div></a>');
+				$(".result").click(function() {
+					$("#searchResults").children().removeClass('resultSelected');
+					$(this).addClass('resultSelected');
+					var temp = $(this).attr("id");
+					var id = temp.substring(6, temp.length);
+					var selectedMarker = locationsMarkers[id];
+					map.setCenter(selectedMarker.position);
+					map.setZoom(13);
+				});
+			}
+		}
+	});
+	// map visual style
 	var styles = [{
 		stylers : [{
 			hue : "#00ffe6"
@@ -116,6 +157,33 @@ function initialize() {
 	map.setOptions({
 		styles : styles
 	});
+
+	$('form input').click(function() {
+		if(this.checked) {
+			
+			var gmarkers = locationsMarkers;
+			for(var i = 0; i < gmarkers.length; i++) {
+				if(gmarkers[i].mycategory == category) {
+					gmarkers[i].setVisible(true);
+				}
+			}
+			document.getElementById(category + "box").checked = true;
+
+		} else {
+			hide(this.value);
+
+		}
+	});
+}
+
+function hide(type) {
+	for(var i = 0; i < gmarkers.length; i++) {
+		if(gmarkers[i].mycategory == category) {
+			gmarkers[i].setVisible(false);
+		}
+	}
+	document.getElementById(category + "box").checked = false;
+	infowindow.close();
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
