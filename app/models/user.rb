@@ -1,21 +1,11 @@
 class User < ActiveRecord::Base
-  include UsersHelper
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable,
+  # :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable
 
-  attr_accessible :username, :email, :phone_number, :password,
-    :password_confirmation
-  has_secure_password
-
-  has_many    :reports
-
-  before_save :create_remember_token
-
-  validates :username, :presence => true, :length => {maximum: 50}
-  validates :password, :presence => true, :length => {:minimum => 6, :maximum => 20}
-  validates :password_confirmation, :presence => true
-
-  private
-
-    def create_remember_token
-      self.remember_token = SecureRandom.urlsafe_base64
-    end
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :username, :password, :password_confirmation, :remember_me
+  # attr_accessible :title, :body
 end

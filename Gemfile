@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
-gem 'bcrypt-ruby', '3.0.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -22,14 +21,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'devise'
 
-group :test do
-  gem 'shoulda'
-end
-
-group :development, :test do
-  gem 'ruby-debug19'
-end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

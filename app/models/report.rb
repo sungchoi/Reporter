@@ -1,4 +1,3 @@
 class Report < ActiveRecord::Base
-  belongs_to :user
-  # attr_accessible :title, :body
+  attr_accessible :body, :title
 end
