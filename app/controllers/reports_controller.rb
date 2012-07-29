@@ -9,6 +9,7 @@ class ReportsController < ApplicationController
     @report = Report.find(params[:id])
     @vote = Confirm.new
     @vote.report_id = params[:id]
+    @vote.user_id = @report.user_id
     respond_to do |format|
       if @vote.save!
         format.html { redirect_to @report, notice: 'Report was confirmed.' }
@@ -26,6 +27,7 @@ class ReportsController < ApplicationController
     @report = Report.find(params[:id])
     @vote = Inaccurate.new
     @vote.report_id = params[:id]
+    @vote.user_id = @report.user_id
     respond_to do |format|
       if @vote.save!
         format.html { redirect_to @report, notice: 'Report was marked as inaccurate.' }

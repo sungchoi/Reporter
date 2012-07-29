@@ -6,7 +6,7 @@ gem 'rails', '3.2.6'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-
+gem 'twilio-ruby'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -31,6 +31,7 @@ end
 group :development do
   gem 'shoulda'
   gem 'debugger'
+  gem 'quiet_assets'
 end
 
 # To use ActiveModel has_secure_password
@@ -44,6 +45,3 @@ end
 
 # Deploy with Capistrano
 # gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'

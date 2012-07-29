@@ -1,4 +1,23 @@
-<p>
+<table>
+  <tr>
+    <th>Location:</th>
+    <th>Type:</th>
+    <th>Description:</th>
+    <th>Confirmation:</th>
+    <th>Inaccurate:</th>
+  </tr>
+
+  <tr>
+    <td><%= report.location%></td>
+    <td><%= report.report_type%></td>
+    <td><%= report.description %></td>
+	<td><%= @report.confirmation_count(params) %></td>
+	<td><%= @report.inaccuracy_count(params) %></td>
+  </tr>
+</table>
+
+
+<!-- <p>
   <b>Location:</b>
   <%= @report.location %>
 </p>
@@ -22,10 +41,10 @@
 <p>
   <b>Inaccurate:</b>
   <%= @report.inaccuracy_count(params) %>
-</p>
-
+</p> -->
+<% #if current user has not voted on this report %>
 <%= button_to "Confirm", {:controller => :reports, :action => :confirm}, :method => :post %>
 <%= button_to "Inaccurate", {:controller => :reports, :action => :inaccurate}, :method => :post %>
-
+<% #end %>
 <%= link_to 'Edit', edit_report_path(@report) %> |
 <%= link_to 'Back', reports_path %>
