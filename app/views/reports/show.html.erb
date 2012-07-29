@@ -16,12 +16,12 @@
 
 <p>
   <b>Confirmations:</b>
-  <%= @report.confirmation_count(params) %>
+  <%= @report.confirmation_count %>
 </p>
 
 <p>
   <b>Inaccurate:</b>
-  <%= @report.inaccuracy_count(params) %>
+  <%= @report.inaccuracy_count %>
 </p>
 
 <%= button_to "Confirm", {:controller => :reports, :action => :confirm}, :method => :post %>

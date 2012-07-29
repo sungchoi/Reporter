@@ -45,7 +45,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @reports }
+      format.json { render json: @reports.map(&:to_hash) }
     end
   end
 
@@ -56,7 +56,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @report }
+      format.json { render json: @report.to_hash }
     end
   end
 

@@ -2,15 +2,33 @@ class Report < ActiveRecord::Base
   attr_accessible :report_type, :description, :location, :latitude, :longitude
 
   belongs_to :user
-  has_many :votes
+  has_many :confirms
+  has_many :inaccurates
 
-  def confirmation_count(params)
-    Vote.where(:report_id => params[:id] ).where(:type => "confirm").count
+  def confirmation_count
+    confirms.count
   end
 
-  def inaccuracy_count(params)
-    Vote.where(:report_id => params[:id] ).where(:type => "inaccurate").count
-  end 
+  def inaccuracy_count
+    inaccurates.count
+  end
+
+  def to_hash
+    {
+      :id                 => id,
+      :report_type        => report_type,
+      :description        => description,
+      :location           => location,
+      :latitude           => latitude,
+      :longitude          => longitude,
+      :image_url          => image_url,
+      :live_stream        => live_stream,
+      :confirmation_count => confirmation_count,
+      :inaccuracy_count   => inaccuracy_count,
+      :created_at         => created_at,
+      :updated_at         => updated_at
+    }
+  end
 
   validates_numericality_of :latitude, :allow_nil => true,
     :greater_than_or_equal_to => -90.0,
