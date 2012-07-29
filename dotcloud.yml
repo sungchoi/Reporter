@@ -1,6 +1,6 @@
 www:
   type: ruby
-  exclude_bundler_groups::
+  exclude_bundler_groups:
     - development
     - test
 data:

@@ -25,9 +25,11 @@ gem 'devise'
 
 group :test do
   gem 'shoulda'
+  gem 'debugger'
 end
 
-group :test, :development do
+group :development do
+  gem 'shoulda'
   gem 'debugger'
 end
 
