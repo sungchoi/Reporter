@@ -14,7 +14,7 @@ function initialize() {
 
 	var infowindow = new google.maps.InfoWindow();
 
-	var locations = [['Crash', 33.57, 36.3, 4], ['Earthquake', 33.7, 36.8784, 5], ['Fire', 33.508, 36.4, 3], ['Road block', 35.2, 38.2, 2], ['Fire', 33.567, 36.3087, 1]];
+	//var locations = [['Crash', 33.57, 36.3, 4], ['Earthquake', 33.7, 36.8784, 5], ['Fire', 33.508, 36.4, 3], ['Road block', 35.2, 38.2, 2], ['Fire', 33.567, 36.3087, 1]];
 
 	// time created
 	// creator
@@ -30,25 +30,37 @@ function initialize() {
 	var infowindow = new google.maps.InfoWindow();
 
 	var marker, i;
-	for( i = 0; i < locations.length; i++) {
-		var name = locations[i][0].toLowerCase().split(' ').join('');
-		var image = 'img/' + name + '.png';
-		var shadow = new google.maps.MarkerImage('img/icon_shadow.png', new google.maps.Size(37, 32), new google.maps.Point(0, 0), new google.maps.Point(0, 32));
-		marker = new google.maps.Marker({
-			position : new google.maps.LatLng(locations[i][1], locations[i][2]),
-			map : map,
-			shadow : shadow,
-			icon : image
-		});
 
-		locationsMarkers[i] = marker;
-		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-			return function() {
-				infowindow.setContent(locations[i][0]);
-				infowindow.open(map, marker);
-			}
-		})(marker, i));
-	}
+	var jsonData;
+	
+	$.getJSON('reports.json', function(data) {
+		jsonData = data;
+		var items = [];
+		for(var i = 0; i < data.length; i++) {
+			var name = data[i].report_type.toLowerCase().split(' ').join('');
+			var image = 'img/' + name + '.png';
+			var shadow = new google.maps.MarkerImage('img/icon_shadow.png', new google.maps.Size(37, 32), new google.maps.Point(0, 0), new google.maps.Point(0, 32));
+			marker = new google.maps.Marker({
+				position : new google.maps.LatLng(data[i].latitude, data[i].longitude),
+				map : map,
+				shadow : shadow,
+				icon : image
+			});
+
+			locationsMarkers[i] = marker;
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infowindow.setContent(data[i].report_type);
+					infowindow.open(map, marker);
+				}
+			})(marker, i));
+
+			/*console.log(data[0].description);
+			$.each(data[i], function(key, val) {
+				j = j + 1;
+			});*/
+		}
+	});
 
 	google.maps.event.addListener(autocomplete, 'place_changed', function() {
 		infowindow.close();
@@ -64,7 +76,7 @@ function initialize() {
 		for( i = 0; i < locationsMarkers.length; i++) {
 			var m = locationsMarkers[i];
 			if(map.getBounds().contains(m.getPosition())) {
-				$("#searchResults").append('<div id=\"result' + i + '\" class=\"result\"><a>' + locations[i][0] + '</a></div>');
+				$("#searchResults").append('<div id=\"result' + i + '\" class=\"result\"><a>' + jsonData[i].report_type + '</a></div>');
 				$(".result").click(function() {
 					$("#searchResults").children().removeClass('resultSelected');
 					$(this).addClass('resultSelected');
@@ -103,12 +115,12 @@ function initialize() {
 		styles : styles
 	});
 
-	$("#dialog:ui-dialog").dialog("destroy");
+	/*$("#dialog:ui-dialog").dialog("destroy");
 
-	$("#dialog-modal").dialog({
-		height : 140,
-		modal : true
-	});
+	 $("#dialog-modal").dialog({
+	 height : 140,
+	 modal : true
+	 });*/
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
