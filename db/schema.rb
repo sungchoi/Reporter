@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20120729080539) do
-=======
 ActiveRecord::Schema.define(:version => 20120729154647) do
->>>>>>> reputation
 
   create_table "reports", :force => true do |t|
     t.string   "location"

@@ -1,17 +1,16 @@
 class ReportsController < ApplicationController
 
-  before_filter :authenticate_user!, :only => [:new, :edit, :create, :update]
+  before_filter :authenticate_user!, :only => [:new, :edit, :create, :update, :confirm, :inaccurate]
+  before_filter :find_user, :only => [:confirm, :inaccurate]
+  before_filter :find_report, :only => [:confirm, :inaccurate, :edit, :update]
+  before_filter :match_report_user, :only => [:edit, :update]
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json'}
 
   # POST /reports/:id/confirm
   # POST /reports/:id/confirm.json
   def confirm
-    @user = current_user
-    @report = Report.find(params[:id])
     @report.add_evaluation(:confirm_votes, 1, @user) #reputation system
-    @vote = Confirm.new
-    @vote.report_id = params[:id]
-    @vote.user_id = @user.id
+    @vote = Confirm.new(:report_id => params[:id], :user_id => @user.id)
     respond_to do |format|
       if @vote.save!
         format.html { redirect_to @report, notice: 'Report was confirmed.' }
@@ -22,12 +21,10 @@ class ReportsController < ApplicationController
       end
     end
   end
-  
+
   # POST /reports/:id/inaccurate
   # POST /reports/:id/inaccurate.json
   def inaccurate
-    @user = current_user
-    @report = Report.find(params[:id])
     @report.add_evaluation(:inaccurate_votes, 1, @user)
     @vote = Inaccurate.new
     @vote.report_id = params[:id]
@@ -42,28 +39,18 @@ class ReportsController < ApplicationController
       end
     end
   end
-  
-  
-  # GET /reports
+
   # GET /reports.json
   def index
     @reports = Report.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @reports.map(&:to_hash) }
-    end
+    render json: @reports.map(&:to_hash)
   end
 
-  # GET /reports/1
   # GET /reports/1.json
   def show
     @report = Report.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @report.to_hash }
-    end
+    render json: @report.to_hash
   end
 
   # GET /reports/new
@@ -101,8 +88,6 @@ class ReportsController < ApplicationController
   # PUT /reports/1
   # PUT /reports/1.json
   def update
-    @report = Report.find(params[:id])
-
     respond_to do |format|
       if @report.update_attributes(params[:report])
         format.html { redirect_to @report, notice: 'Report was successfully updated.' }
@@ -114,15 +99,15 @@ class ReportsController < ApplicationController
     end
   end
 
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy
-    @report = Report.find(params[:id])
-    @report.destroy
+  def find_user
+    @user = current_user
+  end
 
-    respond_to do |format|
-      format.html { redirect_to reports_url }
-      format.json { head :no_content }
-    end
+  def find_report
+    @report = Report.find(params[:id])
+  end
+
+  def match_report_user
+    current_user.id == @report.user_id
   end
 end

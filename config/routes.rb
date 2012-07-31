@@ -1,7 +1,7 @@
 Reporter::Application.routes.draw do
   devise_for :users
 
-  resources :reports do 
+  resources :reports, :except => [:index, :destroy, :show] do
     member do
       post 'confirm'
     end
@@ -9,6 +9,8 @@ Reporter::Application.routes.draw do
       post 'inaccurate'
     end
   end
+  match 'reports.:format' => 'reports#index', :constraints => {:format => /\bjson\b/}
+  match 'reports/:id.:format' => 'reports#show', :constraints => {:format => /json/}
 
   namespace :api do
     namespace :v1 do

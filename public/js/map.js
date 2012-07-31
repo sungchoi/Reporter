@@ -11,19 +11,26 @@ function initialize() {
 	var autocomplete = new google.maps.places.Autocomplete(input);
 	autocomplete.bindTo('bounds', map);
 
-	var infowindow = new google.maps.InfoWindow();
-
 	var locationsMarkers = new Array();
 	var infowindow = new google.maps.InfoWindow();
-	var marker, i;
+	var marker;
 	var jsonData;
 
 	$.getJSON('reports.json', function(data) {
 		jsonData = data;
 		var items = [];
 		for(var i = 0; i < data.length; i++) {
-			var name = data[i].report_type.toLowerCase().split(' ').join('');
+			var name = 'exclamation';//data[i].report_type.toLowerCase().split(' ').join('');
 			var image = 'img/' + name + '.png';
+			/*$.ajax({
+				url : image,
+				type : 'HEAD',
+				error : function() {
+					image = 'img/crash.png';
+				}
+			})
+			console.log(image);*/
+
 			var shadow = new google.maps.MarkerImage('img/icon_shadow.png', new google.maps.Size(37, 32), new google.maps.Point(0, 0), new google.maps.Point(0, 32));
 			marker = new google.maps.Marker({
 				position : new google.maps.LatLng(data[i].latitude, data[i].longitude),
@@ -38,11 +45,11 @@ function initialize() {
 				return function() {
 					var time = jsonData[i].updated_at;
 					var timeRel = jQuery.timeago(time.substring(0, 10));
-					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><p>Confirmation count: "+data[i].confirmation_count+"<br />Inaccuracy count: "+data[i].inaccuracy_count+"</p><button id=\"confirmButton\" onclick=\"confirmButton(" + jsonData[i].id + ")\">Confirm</button><button id=\"inaccurateButton\" onclick=\"inaccurateButton(" + jsonData[i].id + ")\">Mark as inaccurate</button>");
+					var img = (data[i].image_url !== null) ? "<img src=\"" + data[i].image_url + "\">" : "";
+					infowindow.setContent("<h3>" + data[i].report_type + "</h3><p>Detail: " + data[i].description + "</p><p>Created by user " + data[i].user_id + " " + timeRel + "</p><p>Confirmation count: " + data[i].confirmation_count + "<br />Inaccuracy count: " + data[i].inaccuracy_count + "</p>" + img + "<button id=\"confirmButton\" onclick=\"confirmButton(" + jsonData[i].id + ")\">Confirm</button><button id=\"inaccurateButton\" onclick=\"inaccurateButton(" + jsonData[i].id + ")\">Mark as inaccurate</button>");
 					infowindow.open(map, marker);
 				}
 			})(marker, i));
-			var markerCluster = new MarkerClusterer(map, locationsMarkers);
 		}
 	});
 
@@ -165,7 +172,6 @@ function initialize() {
 
 		} else {
 			hide(this.value);
-
 		}
 	});
 }

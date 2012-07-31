@@ -3,6 +3,7 @@ class Report < ActiveRecord::Base
     :image_url, :live_stream
 
   belongs_to :user
+  has_many :votes
   has_many :confirms
   has_many :inaccurates
   
